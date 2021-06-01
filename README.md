@@ -12,7 +12,11 @@ Access to fetch at 'http://127.0.0.1:3000/' from origin 'https://www.google.com'
 
 ## Step 3: Fix by Configuring CORS
 - Add below code before response is sent 
-res.setHeader("Access-Control-Allow-Origin", "https://www.google.com");
+
+const handleRequest = (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "https://www.google.com");
+  res.end('Hello World');
+}
 
 ## Step 3: Call from another website
 - Go to https://nodejs.org/ and fetch again
@@ -24,8 +28,11 @@ Access to fetch at 'http://localhost:3000/' from origin 'https://nodejs.org' has
 
 ## Step 3: Fix by Allowing multiple Origin
 - Add below code before response is sent 
-res.setHeader("Access-Control-Allow-Origin", "*");
 
+const handleRequest = (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.end('Hello World');
+}
 
 - If only specific domains should be allowed, create a list of allowed origins and set based on exist check as shown below
 
@@ -47,7 +54,19 @@ Access to fetch at 'http://localhost:3000/' from origin 'https://nodejs.org' has
 
 ## Step 5: Fix by allowing the header
 - Add below code before response is sent 
-res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+const handleRequest = (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
+  if (req.method == 'GET') {
+    res.end('Hello World');
+  } else if (req.method == 'OPTIONS') {
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.end();
+  } else {
+    res.end('Hello World from another world');
+  }
+}
 
 ## Step 6: Complex Request - Setting different Request Header
 - Run fetch with headers
@@ -61,5 +80,21 @@ Access to fetch at 'http://localhost:3000/' from origin 'https://nodejs.org' has
 
 ## Step 7: Fix by allowing the header
 - Add below code before response is sent 
-res.setHeader("Access-Control-Allow-Headers", "Content-Type, X-Requested-With");
 
+const handleRequest = (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+
+  if (req.method == 'GET') {
+    res.end('Hello World');
+  } else if (req.method == 'OPTIONS') {
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, X-Requested-With");
+    res.end();
+  } else {
+    res.end('Hello World from another world');
+  }
+}
+
+
+
+## LINKS
+https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
